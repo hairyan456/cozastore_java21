@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.cybersoft.cozastore_java21.exception.CustomFileNotFoundException;
-
-//import com.cybersoft.cozastore_java21.exception.CustomFileNotFoundException;
+ import com.cybersoft.cozastore_java21.exception.CustomFileNotFoundException;
 
 @RestController
 @RequestMapping("/demo")
@@ -44,31 +41,28 @@ public class FileController {
 			return new ResponseEntity<>("Upload "+file.getOriginalFilename()+" successfully!",HttpStatus.OK);
 		}
 		catch(Exception e) {
-			System.out.println("Error:"+e.getLocalizedMessage());
+			throw new CustomFileNotFoundException(500, "File not found");
 		}
-		return new ResponseEntity<>("Upload failed!",HttpStatus.OK);
 	}
 
 	@GetMapping("/{filename}")
 	public ResponseEntity<?> downloadFile(@PathVariable("filename") String filename){
 		try {
-			//Đường dẫn folder root lưu hình
-			Path rootPath = Paths.get(spath);
+			Path rootPath = Paths.get(spath); //Đường dẫn folder root lưu hình
 			Resource resource = new UrlResource(rootPath.resolve(filename).toUri());
 			if(resource.exists()) {
 				//nếu tồn tại thì cho phép download
-//				return new ResponseEntity<>(resource,HttpStatus.OK);
 				System.out.println();
 				return ResponseEntity.ok()
 				        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
 			}
 			else {
 				//khi ném Exception thì code sẽ dừng và văng ra lỗi
-				throw new CustomFileNotFoundException(200,"File not found");
+				throw new CustomFileNotFoundException(500,"File not found");
 			}
 		}
 		catch(Exception e) {
-			throw new CustomFileNotFoundException(200,"File not found");
+			throw new CustomFileNotFoundException(500,"File not found");
 		}
 	}
 	

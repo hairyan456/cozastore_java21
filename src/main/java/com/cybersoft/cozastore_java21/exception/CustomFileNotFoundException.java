@@ -1,5 +1,6 @@
 package com.cybersoft.cozastore_java21.exception;
 
+@SuppressWarnings("serial")
 public class CustomFileNotFoundException extends RuntimeException{
 	private int status;
 	private String message;
@@ -21,7 +22,6 @@ public class CustomFileNotFoundException extends RuntimeException{
 		this.message = message;
 	}
 	public CustomFileNotFoundException() {
-		super();
 	}
 	
 	
