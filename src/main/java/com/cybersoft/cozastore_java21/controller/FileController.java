@@ -41,7 +41,7 @@ public class FileController {
 			return new ResponseEntity<>("Upload "+file.getOriginalFilename()+" successfully!",HttpStatus.OK);
 		}
 		catch(Exception e) {
-			throw new CustomFileNotFoundException(500, "File not found");
+			throw new CustomFileNotFoundException("File not found");
 		}
 	}
 
@@ -53,16 +53,15 @@ public class FileController {
 			if(resource.exists()) {
 				//nếu tồn tại thì cho phép download
 				System.out.println();
-				return ResponseEntity.ok()
-				        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+				return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
 			}
 			else {
 				//khi ném Exception thì code sẽ dừng và văng ra lỗi
-				throw new CustomFileNotFoundException(500,"File not found");
+				throw new CustomFileNotFoundException("File not found");
 			}
 		}
 		catch(Exception e) {
-			throw new CustomFileNotFoundException(500,"File not found");
+			throw new CustomFileNotFoundException("File not found");
 		}
 	}
 	
