@@ -35,6 +35,8 @@ public class JwtFilter extends OncePerRequestFilter { //Tất cả request đê
 			throws ServletException, IOException {
 		try {
 			String header = request.getHeader("Authorization");  //lấy giá trị của header có key là Authorization
+			if(header != null)
+				System.out.println("Check bearer token:"+header);
 			if(header.startsWith("Bearer ")) {
 				String token = header.replace("Bearer", "");
 				Claims claims = jwtHelper.decodeToken(token.trim());
@@ -48,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter { //Tất cả request đê
 			}
 		}
 		catch(Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("Error doFilterInternal():"+e.getMessage());
 		}
 		filterChain.doFilter(request, response);
 		

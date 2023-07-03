@@ -5,8 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cybersoft.cozastore_java21.entity.UserEntity;
+import com.cybersoft.cozastore_java21.exception.CustomException;
+import com.cybersoft.cozastore_java21.exception.CustomException;
 import com.cybersoft.cozastore_java21.payload.request.SignupRequest;
 import com.cybersoft.cozastore_java21.repository.UserRespository;
+import com.cybersoft.cozastore_java21.service.imp.UserServiceImp;
 
 @Service
 public class UserService implements UserServiceImp{
@@ -29,7 +32,7 @@ public class UserService implements UserServiceImp{
 			isSuccess = true;
 		}
 		catch(Exception e) {
-			System.out.println(e.getMessage());
+			throw new CustomException(e.getMessage());
 		}
 		return isSuccess;
 	}
