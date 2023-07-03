@@ -65,7 +65,6 @@ public class FileController {
 		}
 	}
 	
-	//BT vê nhà: viết API upload Product(image,name,price,description,quantity,image_detail)
 
 
 }

@@ -1,18 +1,23 @@
 package com.cybersoft.cozastore_java21.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cybersoft.cozastore_java21.exception.CustomException;
 import com.cybersoft.cozastore_java21.payload.request.SignupRequest;
 import com.cybersoft.cozastore_java21.payload.response.BaseResponse;
-import com.cybersoft.cozastore_java21.service.UserServiceImp;
+import com.cybersoft.cozastore_java21.service.imp.UserServiceImp;
 import com.cybersoft.cozastore_java21.utils.JwtHelper;
 
 import jakarta.validation.Valid;
@@ -50,13 +55,13 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/signup",method = RequestMethod.POST)
-	public ResponseEntity<?> singup(@Valid SignupRequest request){
+	public ResponseEntity<?> singup(@Valid SignupRequest request, BindingResult result){
+		List<FieldError> list = result.getFieldErrors(); //nếu vi phạm rule liên quan validation thì list này sẽ có giá trị
+		for(FieldError error:list) {
+			throw new CustomException(error.getDefaultMessage());
+		}
 		boolean isSuccess = userServiceImp.addUser(request);
-		BaseResponse response = null;
-		if(isSuccess) 
-			response = new BaseResponse(200, "SignUp successfully", isSuccess);
-		else
-			response = new BaseResponse(500, "Signup failed because username or email duplicate!", isSuccess);
-		return new ResponseEntity<>(response,HttpStatus.OK);
+		BaseResponse response = new BaseResponse(200,"Signup successfully",isSuccess);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

@@ -12,7 +12,12 @@ import jakarta.persistence.OneToMany;
 @Entity(name = "category")
 public class CategoryEntity {
 
-    @Id
+    public CategoryEntity(int id) {
+		super();
+		this.id = id;
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 

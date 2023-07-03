@@ -25,7 +25,11 @@ public class SizeEntity {
         return products;
     }
 
-    public void setProducts(Set<ProductEntity> products) {
+    public SizeEntity(int id) {
+		this.id = id;
+	}
+
+	public void setProducts(Set<ProductEntity> products) {
         this.products = products;
     }
 

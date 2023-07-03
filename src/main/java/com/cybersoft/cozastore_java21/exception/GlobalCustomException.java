@@ -15,4 +15,12 @@ public class GlobalCustomException {
 		BaseResponse response = new BaseResponse(500, "", e.getMessage()); //gọi được đường dẫn nhưng file ko tồn tại trả mã 500
 		return new ResponseEntity<>(response,HttpStatus.OK); //gọi vô được đường dẫn thì trả status 200
 	}
+	
+	 @ExceptionHandler(CustomException.class)
+	    public ResponseEntity<?> handleCustomException(Exception e){
+	        BaseResponse response = new BaseResponse();
+	        response.setStatuscode(500);
+	        response.setData(e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 }
